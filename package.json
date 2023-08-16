@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "postbuild": "prisma generate",
+    "postbuild": "npx prisma generate",
     "dev": "next dev",
     "build": "npm run postbuild && next build",
     "start": "next start",

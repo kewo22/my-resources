@@ -12,10 +12,8 @@ const nextConfig = {
     appDir: true,
   },
   env: {
-    DATABASE_URL:
-      "mongodb+srv://kewo22:tOoMhmkRcwMJOzr0@cluster0.64jtd2x.mongodb.net/my-resources",
-    API_URL:
-      "mongodb+srv://kewo22:tOoMhmkRcwMJOzr0@cluster0.64jtd2x.mongodb.net/my-resources",
+    DATABASE_URL: process.env.DATABASE_URL,
+    API_URL: process.env.API_URL,
   },
 };
 

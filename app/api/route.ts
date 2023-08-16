@@ -9,6 +9,7 @@ export async function GET() {
         "Content-Type": "application/json",
         //   'API-Key': process.env.DATA_API_KEY,
       },
+      credentials: 'include'
     }
   );
   const data = await res.json();

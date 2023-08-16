@@ -9,6 +9,7 @@ async function saveResource(resource: Resource) {
     body: JSON.stringify(resource),
     headers: {
       "Content-Type": "application/json",
+      credentials: "include",
     },
   });
   if (!res.ok) {

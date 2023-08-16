@@ -2,10 +2,8 @@
 
 import React, { FormEvent, use, useState } from "react";
 
-import Tag from "../_components/tag";
-
 async function saveResource(resource: Resource) {
-  const res = await fetch("http://localhost:3000/api", {
+  const res = await fetch(`${process.env.API_URL}/`, {
     method: "post",
     mode: "no-cors",
     body: JSON.stringify(resource),
@@ -63,8 +61,7 @@ export default function AddResource(props: AddResourceProps) {
       const response = await saveResource(state);
       setState(resource);
     } catch (error) {
-
-      alert('ERROR')
+      alert("ERROR");
     }
   };
 

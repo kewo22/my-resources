@@ -5,7 +5,7 @@ import Resources from "./_components/resources";
 // import styles from "./page.module.css";
 
 async function getTags() {
-  const res = await fetch("http://localhost:3000/api/tag");
+  const res = await fetch(`${process.env.API_URL}/tag`);
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");

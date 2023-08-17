@@ -1,6 +1,8 @@
 "use client";
 
-import React, { FormEvent, use, useState } from "react";
+import React, { FormEvent, useState } from "react";
+
+import { Resource } from "../_interfaces/resource";
 
 async function saveResource(resource: Resource) {
   const res = await fetch(`${process.env.API_URL}/`, {
@@ -18,12 +20,6 @@ async function saveResource(resource: Resource) {
   }
   return res.json();
 }
-
-export type Resource = {
-  url: string;
-  description: string;
-  tags: string[];
-};
 
 export type AddResourceProps = {
   tags: any[];
@@ -111,11 +107,6 @@ export default function AddResource(props: AddResourceProps) {
           })}
         </div>
 
-        {/* <div className="flex flex-row flex-wrap gap-3">
-          {tags.map((tag) => {
-            return <Tag key={tag.id}>{tag.tag}</Tag>;
-          })}
-        </div> */}
         <button
           type="submit"
           className="select-none col-span-1 bg-emerald-300 outline-none border border-emerald-600 p-3 rounded-md"

@@ -23,7 +23,7 @@ export default async function Home() {
   return (
     <main className="min-h-screen overflow-hidden flex flex-col gap-3 p-3 max-w-md m-auto bg-gradient-to-b from-indigo-100 from-10% via-sky-100 via-30% to-emerald-100 to-90%">
       <AddResource tags={tags} />
-      {/* <Tag count={99}>CSS</Tag> */}
+      <hr className="border-black" />
       <Resources />
     </main>
   );

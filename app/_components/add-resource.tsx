@@ -110,6 +110,7 @@ export default function AddResource(props: AddResourceProps) {
         <button
           type="submit"
           className="select-none col-span-1 bg-emerald-300 outline-none border border-emerald-600 p-3 rounded-md"
+          disabled
         >
           Save
         </button>

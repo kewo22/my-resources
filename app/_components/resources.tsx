@@ -6,7 +6,7 @@ import { ResourceResponse } from "../_interfaces/resource";
 import Tag from "./tag";
 
 async function getResources() {
-  const res = await fetch(`${process.env.API_URL}`);
+  const res = await fetch(`${process.env.API_URL}`, { cache: "no-cache" });
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");

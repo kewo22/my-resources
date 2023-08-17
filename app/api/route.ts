@@ -2,18 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "../prisma";
 
 export async function GET() {
-  const res = await fetch(
-    "https://dev-xxiy8iynl1hazsp.api.raw-labs.com/json-programming-heroes",
-    {
-      headers: {
-        "Content-Type": "application/json",
-        //   'API-Key': process.env.DATA_API_KEY,
-      },
-      credentials: 'include'
-    }
-  );
-  const data = await res.json();
-  return NextResponse.json({ data });
+  const resource = await prisma.resources.findMany();
+  return NextResponse.json(resource);
+  // const res = await fetch(
+  //   "https://dev-xxiy8iynl1hazsp.api.raw-labs.com/json-programming-heroes",
+  //   {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       //   'API-Key': process.env.DATA_API_KEY,
+  //     },
+  //     credentials: 'include'
+  //   }
+  // );
+  // const data = await res.json();
+  // return NextResponse.json({ data });
 }
 
 export async function POST(req: NextRequest) {

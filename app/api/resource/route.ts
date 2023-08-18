@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "../prisma";
+import prisma from "../../prisma";
 
 export async function GET() {
   const resource = await prisma.resources.findMany();
@@ -22,3 +22,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error, status: 500 })
   }
 }
+
+// export async function DELETE(req: NextRequest) {
+//   try {
+//     // const { description, tags, url } = await req.json()
+//     // const resource = await prisma.resources.create({
+//     //   data: {
+//     //     url,
+//     //     tags,
+//     //     description
+//     //   },
+//     // })
+//     // return NextResponse.json({ resource, status: 201 })
+//     console.log(req.json())
+//   } catch (error) {
+//     // err
+//     return NextResponse.json({ error, status: 500 })
+//   }
+// }

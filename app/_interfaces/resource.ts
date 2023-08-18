@@ -7,9 +7,6 @@ interface IResource {
 interface IResourceResponse {
     id: string;
     createdAt: string;
-    url: string;
-    description: string;
-    tags: string[];
 }
 
 export type Resource = IResource;

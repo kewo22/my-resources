@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "postbuild": "npx prisma generate",
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "npm run postbuild && next build",
     "start": "next start",
     "lint": "next lint"

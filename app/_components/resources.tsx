@@ -1,12 +1,11 @@
 import React from "react";
-import Link from "next/link";
 
 import { ResourceResponse } from "../_interfaces/resource";
-
-import Tag from "./tag";
+import Resource from "./resource";
 
 async function getResources() {
-  const res = await fetch(`${process.env.API_URL}`, { cache: "no-cache" });
+  const res = await fetch(`${process.env.API_URL}/resource`);
+  console.log("🚀 ~ file: resources.tsx:9 ~ getResources ~ res:", res);
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");
@@ -16,30 +15,13 @@ async function getResources() {
 
 export default async function Resources() {
   const resources = (await getResources()) as ResourceResponse[];
-  console.log(
-    "🚀 ~ file: resources.tsx:16 ~ Resources ~ resources:",
-    resources
-  );
-
+  console.log(resources);
   return (
     <div>
       <div className="flex flex-col gap-3">
         {resources.map((resource: ResourceResponse) => {
-          return (
-            <Link
-              key={resource.id}
-              className="w-full bg-slate-100 border border-slate-500 rounded-md p-3"
-              href={resource.url}
-              target="_blank"
-            >
-              <p>{resource.description}</p>
-              <div className="flex flex-row flex-wrap gap-3">
-                {resource.tags.map((tag) => {
-                  return <Tag key={`${resource.id}-${tag}`}>{tag}</Tag>;
-                })}
-              </div>
-            </Link>
-          );
+          // return <>{resource.id}</>;
+          return <Resource key={resource.id} resource={resource} />;
         })}
       </div>
     </div>

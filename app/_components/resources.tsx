@@ -14,15 +14,15 @@ async function getResources() {
 }
 
 export default async function Resources() {
-  // const resources = (await getResources()) as ResourceResponse[];
-  // console.log(resources);
+  const resources = (await getResources()) as ResourceResponse[];
+  console.log(resources);
   return (
     <div>
       <div className="flex flex-col gap-3">
-        {/* {resources.map((resource: ResourceResponse) => {
+        {resources.map((resource: ResourceResponse) => {
           // return <>{resource.id}</>;
           return <Resource key={resource.id} resource={resource} />;
-        })} */}
+        })}
       </div>
     </div>
   );

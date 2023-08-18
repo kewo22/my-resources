@@ -6,7 +6,7 @@ import { Resource } from "../_interfaces/resource";
 import { Tag, TagCheckBox } from "../_interfaces/tag";
 
 async function saveResource(resource: Resource) {
-  const res = await fetch(`${process.env.API_URL}/`, {
+  const res = await fetch(`${process.env.API_URL}/resource`, {
     method: "post",
     mode: "no-cors",
     body: JSON.stringify(resource),

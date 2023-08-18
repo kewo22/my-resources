@@ -1,6 +1,7 @@
 "use client";
 
 import React, { FormEvent, useState, useEffect, ChangeEvent } from "react";
+import { useRouter } from "next/navigation";
 
 import { Resource } from "../_interfaces/resource";
 import { Tag, TagCheckBox } from "../_interfaces/tag";
@@ -27,6 +28,8 @@ export type AddResourceProps = {
 
 export default function AddResource(props: AddResourceProps) {
   const { tags } = props;
+
+  const router = useRouter();
 
   let resource: Resource = {
     description: "",
@@ -103,8 +106,13 @@ export default function AddResource(props: AddResourceProps) {
     setState(resource);
   };
 
+  const handlePlayClick = () => {
+    router.push(`resources`);
+  };
+
   return (
     <div className="">
+      <button onClick={() => handlePlayClick()}>to resources</button>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <textarea
           name="url"

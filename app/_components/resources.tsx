@@ -7,8 +7,9 @@ import { ResourceResponse } from "../_interfaces/resource";
 import Resource from "./resource";
 
 async function getResources() {
-  const res = await fetch(`${process.env.API_URL}/resource`);
-  console.log("🚀 ~ file: resources.tsx:9 ~ getResources ~ res:", res);
+  const res = await fetch(`${process.env.API_URL}/resource`, {
+    cache: "no-store",
+  });
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");
@@ -18,12 +19,10 @@ async function getResources() {
 
 export default async function Resources() {
   const resources = (await getResources()) as ResourceResponse[];
-  console.log(resources);
   return (
     <div>
       <div className="flex flex-col gap-3">
         {resources.map((resource: ResourceResponse) => {
-          // return <>{resource.id}</>;
           return <Resource key={resource.id} resource={resource} />;
         })}
       </div>

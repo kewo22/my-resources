@@ -14,26 +14,31 @@ type ResourceProp = {
   resource: ResourceResponse;
 };
 
-// async function deleteResource(id: string) {
-//   const res = await fetch(`${process.env.API_URL}/${id}`, {
-//     method: "delete",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
+async function deleteResource(id: string) {
+  const res = await fetch(`${process.env.API_URL}/resource/${id}`, {
+    method: "delete",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-//   if (!res.ok) {
-//     // This will activate the closest `error.js` Error Boundary
-//     throw new Error("Failed to fetch data");
-//   }
-//   return res.json();
-// }
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch data");
+  }
+  return res.json();
+}
 
 export default function Resource(props: ResourceProp) {
   const { resource } = props;
 
   const handleDeleteClick = async () => {
-    // await deleteResource(resource.id);
+    let text = "Confirm delete ?";
+    if (confirm(text) === true) {
+      await deleteResource(resource.id);
+    } else {
+      return;
+    }
   };
 
   return (

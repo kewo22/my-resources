@@ -112,7 +112,6 @@ export default function AddResource(props: AddResourceProps) {
 
   return (
     <div className="">
-      <button onClick={() => handlePlayClick()}>to resources</button>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <textarea
           name="url"

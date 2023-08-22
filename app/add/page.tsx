@@ -110,7 +110,7 @@ export default function AddResource() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <div className="flex flex-row items-center gap-3 mt-3 mb-6">
         <Link
           href={{
@@ -142,33 +142,42 @@ export default function AddResource() {
           value={state.description}
         />
 
-        <div className="flex items-center flex-wrap gap-3">
-          {tagsCheckBox?.map((tag, i) => {
-            return (
-              <div
-                key={`tag-lbl-${tag.id}`}
-                className={`flex items-center justify-center border-r-emerald-600 ${
-                  i === tagsCheckBox.length - 1
-                    ? "pr-0 border-r-0"
-                    : "pr-3 border-r"
-                } bg-[${tag.color}]`}
-              >
-                <label htmlFor={`tag-chk-${tag.id}`} className="mr-1 text-sm">
-                  {tag.tag}
-                </label>
-                <input
-                  className="tag-input"
-                  type="checkbox"
-                  id={`tag-chk-${tag.id}`}
-                  name={tag.tag}
-                  value={tag.tag}
-                  checked={tag.isChecked}
-                  onChange={onTagChange}
-                />
-              </div>
-            );
-          })}
-        </div>
+        {!data && (
+          <div className="animate-pulse bg-slate-500 h-10 px-3 rounded-md w-full flex items-center">
+            <p className="text-sm">FETCHING TAGS</p>
+          </div>
+        )}
+
+        {data && tagsCheckBox && (
+          <div className="flex items-center flex-wrap gap-3">
+            {tagsCheckBox.map((tag, i) => {
+              return (
+                <div
+                  key={`tag-lbl-${tag.id}`}
+                  className={`flex items-center justify-center border-r-emerald-600 ${
+                    i === tagsCheckBox.length - 1
+                      ? "pr-0 border-r-0"
+                      : "pr-3 border-r"
+                  }`}
+                  // bg-[${tag.color}]
+                >
+                  <label htmlFor={`tag-chk-${tag.id}`} className="mr-1 text-sm">
+                    {tag.tag}
+                  </label>
+                  <input
+                    className="tag-input"
+                    type="checkbox"
+                    id={`tag-chk-${tag.id}`}
+                    name={tag.tag}
+                    value={tag.tag}
+                    checked={tag.isChecked}
+                    onChange={onTagChange}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         <button
           type="submit"

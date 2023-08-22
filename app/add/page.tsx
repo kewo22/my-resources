@@ -8,6 +8,7 @@ import { Resource } from "../_interfaces/resource";
 import { Tag, TagCheckBox } from "../_interfaces/tag";
 import BackIcon from "../_components/ui/icon/back";
 import { saveResource } from "../_utils/api/resource";
+import { useFetch } from "../_hooks/use-fetch";
 
 async function getTags() {
   const res = await fetch(`${process.env.API_URL}/tag`, {
@@ -34,20 +35,22 @@ export default function AddResource() {
   const [state, setState] = useState<Resource>(resource);
   const [isFormValid, setIsFormValid] = useState(false);
 
+  const { data, error } = useFetch<Tag[]>(`${process.env.API_URL}/tag`);
+
+  console.log("🚀 ~ file: page.tsx:40 ~ AddResource ~ error:", error);
+  console.log("🚀 ~ file: page.tsx:40 ~ AddResource ~ data:", data);
+
   useEffect(() => {
+    if (!data) return;
     const tagCheckBox: TagCheckBox[] = [];
-    fetch(`${process.env.API_URL}/tag`)
-      .then((res) => res.json())
-      .then((data) => {
-        data.forEach((tag: Tag) => {
-          tagCheckBox.push({ ...tag, isChecked: false });
-        });
-        setTagsCheckBox(tagCheckBox);
-      });
+    data.forEach((tag: Tag) => {
+      tagCheckBox.push({ ...tag, isChecked: false });
+    });
+    setTagsCheckBox(tagCheckBox);
     return () => {
       setTagsCheckBox(null);
     };
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     if (!state.description || !state.url || !state.tags.length) {

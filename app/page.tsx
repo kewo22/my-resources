@@ -7,7 +7,6 @@ export default function Home() {
   return (
     <main className="flex flex-col gap-3 min-h-screen">
       <Resources />
-
       <Link
         href={{
           pathname: "/add",

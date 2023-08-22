@@ -21,7 +21,11 @@ export default function RootLayout({
       <meta name="theme-color" content="#000" />
 
       <head />
-      <body className={`${inter.className}`}>{children}</body>
+      <body
+        className={`${inter.className} p-3 max-w-md m-auto bg-gradient-to-b from-indigo-100 from-10% via-sky-100 via-30% to-emerald-100 to-90%`}
+      >
+        {children}
+      </body>
     </html>
   );
 }

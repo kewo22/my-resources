@@ -15,12 +15,13 @@ model Resources {
   createdAt   DateTime @default(now())
   url         String   @unique
   description String?
-  tags         String[]
+  tags        String[]
 }
 
 model Tags {
-  id  String @id @default(auto()) @map("_id") @db.ObjectId
-  tag String @unique
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  tag   String @unique
+  color String
   // Resource   Resource? @relation(fields: [resourceId], references: [id])
   // resourceId String?   @db.ObjectId
 }

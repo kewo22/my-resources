@@ -7,22 +7,7 @@ import Link from "next/link";
 import { Resource } from "../_interfaces/resource";
 import { Tag, TagCheckBox } from "../_interfaces/tag";
 import BackIcon from "../_components/ui/icon/back";
-
-async function saveResource(resource: Resource) {
-  const res = await fetch(`${process.env.API_URL}/resource`, {
-    method: "post",
-    mode: "no-cors",
-    body: JSON.stringify(resource),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to save data");
-  }
-  return res.json();
-}
+import { saveResource } from "../_utils/api/resource";
 
 async function getTags() {
   const res = await fetch(`${process.env.API_URL}/tag`, {
@@ -54,12 +39,7 @@ export default function AddResource() {
     fetch(`${process.env.API_URL}/tag`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("🚀 ~ file: page.tsx:66 ~ .then ~ data:", data);
         data.forEach((tag: Tag) => {
-          console.log(
-            "🚀 ~ file: page.tsx:69 ~ data.forEach ~ tag:",
-            tag.color
-          );
           tagCheckBox.push({ ...tag, isChecked: false });
         });
         setTagsCheckBox(tagCheckBox);

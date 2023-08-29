@@ -37,9 +37,6 @@ export default function AddResource() {
 
   const { data, error } = useFetch<Tag[]>(`${process.env.API_URL}/tag`);
 
-  console.log("🚀 ~ file: page.tsx:40 ~ AddResource ~ error:", error);
-  console.log("🚀 ~ file: page.tsx:40 ~ AddResource ~ data:", data);
-
   useEffect(() => {
     if (!data) return;
     const tagCheckBox: TagCheckBox[] = [];

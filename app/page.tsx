@@ -5,7 +5,7 @@ import AddIcon from "./_components/ui/icon/add";
 
 export default function Home() {
   return (
-    <main className="flex flex-col gap-3 min-h-screen">
+    <main className="flex flex-col gap-3 min-h-full h-full overflow-hidden">
       <Resources />
       <Link
         href={{

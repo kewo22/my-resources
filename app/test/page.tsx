@@ -52,7 +52,7 @@ function TextInput(props: TextInputProps<Inputs>) {
   let className = {
     wrapper: {
       default:
-        "w-full border-b-2 border-b-stone-600 flex flex-row gap-1 pb-1 items-center",
+        "w-full border-b-2 border-b-stone-600 flex flex-row gap-1 pb-1 items-center focus-within:border-blue-600 transition-all",
       error: "",
     },
     input: "outline-none bg-transparent flex-grow",
@@ -61,7 +61,7 @@ function TextInput(props: TextInputProps<Inputs>) {
 
   if (fieldState && fieldState.error && fieldState.error.message) {
     const classNameCopy = JSON.parse(JSON.stringify(className));
-    classNameCopy.wrapper.error = "border-b-red-600";
+    classNameCopy.wrapper.error = "!border-b-red-600";
     className = { ...classNameCopy };
   } else {
     const classNameCopy = JSON.parse(JSON.stringify(className));
@@ -139,9 +139,7 @@ export default function Page() {
           placeHolder="Item"
           useControllerProps={{ control, name: "age" }}
         />
-        {/* <NumberInput control={control} name="age" /> */}
-        {/* <input type="submit" /> */}
-        <button type="submit">Save 1</button>
+        <button type="submit">Save 2</button>
       </form>
     </>
   );

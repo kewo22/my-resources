@@ -71,6 +71,8 @@ function TextInput(props: TextInputProps<Inputs>) {
 
   if (type === "num") {
     inputMode = "numeric";
+  } else {
+    inputMode = "text";
   }
 
   return (

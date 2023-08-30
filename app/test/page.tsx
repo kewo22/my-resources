@@ -80,7 +80,7 @@ function TextInput(props: TextInputProps<Inputs>) {
         value={field.value ? field.value : ""}
         className={className.input}
         type={type}
-        inputMode={inputMode}
+        inputMode={inputMode || "text"}
         placeholder={placeHolder}
       />
       <p className={className.errorText}>{fieldState.error?.message}</p>
@@ -123,7 +123,10 @@ export default function Page() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-start gap-5">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col items-start gap-5"
+      >
         <TextInput
           type="text"
           placeHolder="Item"
@@ -135,7 +138,8 @@ export default function Page() {
           useControllerProps={{ control, name: "age" }}
         />
         {/* <NumberInput control={control} name="age" /> */}
-        <input type="submit" />
+        {/* <input type="submit" /> */}
+        <button type="submit">Save</button>
       </form>
     </>
   );

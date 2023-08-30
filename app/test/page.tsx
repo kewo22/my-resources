@@ -141,7 +141,7 @@ export default function Page() {
         />
         {/* <NumberInput control={control} name="age" /> */}
         {/* <input type="submit" /> */}
-        <button type="submit">Save</button>
+        <button type="submit">Save 1</button>
       </form>
     </>
   );

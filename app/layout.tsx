@@ -1,8 +1,8 @@
-import { Inter } from "next/font/google";
+import { Inter, Fira_Sans } from "next/font/google";
 
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const FiraSans = Fira_Sans({ subsets: ["latin"], weight: "400" });
 
 export default function RootLayout({
   children,
@@ -22,7 +22,7 @@ export default function RootLayout({
 
       <head />
       <body
-        className={`${inter.className} h-[100dvh] max-h-[100dvh] overflow-hidden p-3 max-w-md m-auto bg-gradient-to-b from-indigo-100 from-10% via-sky-100 via-30% to-emerald-100 to-90%`}
+        className={`${FiraSans.className} h-[100dvh] max-h-[100dvh] overflow-hidden p-3 max-w-md m-auto bg-gradient-to-b from-indigo-100 from-10% via-sky-100 via-30% to-emerald-100 to-90%`}
       >
         {children}
       </body>

@@ -1,9 +1,6 @@
 "use client";
 
 import React from "react";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-
 import {
   useForm,
   SubmitHandler,
@@ -12,6 +9,7 @@ import {
   FieldValues,
 } from "react-hook-form";
 import { number, object, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 interface Inputs {
   firstName: string;
@@ -36,14 +34,6 @@ const schema = object().shape({
     ),
 });
 
-// const schema = object({
-//   firstName: string().required(),
-//   age: number().positive().integer(),
-//   // email: string().email(),
-//   // website: string().url().nullable(),
-//   // createdOn: date().default(() => new Date()),
-// });
-
 function TextInput(props: TextInputProps<Inputs>) {
   const { useControllerProps, placeHolder = "", type = "text" } = props;
   const { field, fieldState } = useController(useControllerProps);
@@ -62,7 +52,7 @@ function TextInput(props: TextInputProps<Inputs>) {
   let className = {
     wrapper: {
       default:
-        "border-b border-b-slate-950 flex flex-row gap-1 pb-1 items-center",
+        "w-full border-b-2 border-b-stone-600 flex flex-row gap-1 pb-1 items-center",
       error: "",
     },
     input: "outline-none bg-transparent flex-grow",
@@ -133,7 +123,7 @@ export default function Page() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-start gap-5">
         <TextInput
           type="text"
           placeHolder="Item"

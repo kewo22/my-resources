@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo } from "react";
 import {
   useForm,
   UseControllerProps,
@@ -76,8 +76,8 @@ function TextInput(props: TextInputProps<Inputs>) {
   } = props;
   const { field, fieldState } = useController(useControllerProps);
 
-  const DEFAULT_CLASSES = useMemo(() => {
-    return {
+  const className = useMemo(() => {
+    let className = {
       wrapper: {
         default:
           "w-full border-b border-b-stone-600 flex flex-row items-center focus-within:border-blue-600 transition-all py-1 px-3",
@@ -91,19 +91,27 @@ function TextInput(props: TextInputProps<Inputs>) {
       input: "outline-none bg-transparent flex-grow",
       errorText: "text-red-600 text-xs font-semibold",
     };
-  }, []);
 
-  const [className, setClassName] = useState<any>(DEFAULT_CLASSES);
-
-  useEffect(() => {
+    const classNameCopy = JSON.parse(JSON.stringify(className));
     if (isDisabled) {
-      const classNameCopy = JSON.parse(JSON.stringify(DEFAULT_CLASSES));
       classNameCopy.wrapper.disabled = "!bg-gray-100";
-      setClassName((prev: any) => {
-        return { ...prev, ...classNameCopy };
-      });
+      className = { ...classNameCopy };
     }
-  }, [isDisabled, DEFAULT_CLASSES]);
+
+    if (!isDisabled) {
+      if (fieldState && fieldState.error && fieldState.error.message) {
+        classNameCopy.wrapper.error = "!border-b-red-600";
+        classNameCopy.label.error = "text-red-600";
+        className = { ...classNameCopy };
+      } else {
+        classNameCopy.wrapper.error = "";
+        classNameCopy.label.error = "";
+        className = { ...classNameCopy };
+      }
+    }
+
+    return className;
+  }, [isDisabled, fieldState]);
 
   let inputMode: any =
     "none" ||
@@ -115,14 +123,6 @@ function TextInput(props: TextInputProps<Inputs>) {
     "decimal" ||
     "search" ||
     undefined;
-
-  if (fieldState && fieldState.error && fieldState.error.message) {
-    className.wrapper.error = "!border-b-red-600";
-    className.label.error = "text-red-600";
-  } else {
-    className.wrapper.error = "";
-    className.label.error = "";
-  }
 
   if (type === "num") {
     inputMode = "numeric";
@@ -152,7 +152,9 @@ function TextInput(props: TextInputProps<Inputs>) {
         placeholder={placeHolder}
         disabled={isDisabled}
       />
-      <p className={className.errorText}>{fieldState.error?.message}</p>
+      {!isDisabled && (
+        <p className={className.errorText}>{fieldState.error?.message}</p>
+      )}
       {/* <button className={`${className.btn.btn} ${className.btn.save}`}>
         Save
       </button>

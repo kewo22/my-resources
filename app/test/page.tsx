@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   useForm,
   UseControllerProps,
@@ -76,7 +76,7 @@ function TextInput(props: TextInputProps<Inputs>) {
   } = props;
   const { field, fieldState } = useController(useControllerProps);
 
-  const className = useMemo(() => {
+  const DEFAULT_CLASSES = useMemo(() => {
     return {
       wrapper: {
         default:
@@ -93,15 +93,17 @@ function TextInput(props: TextInputProps<Inputs>) {
     };
   }, []);
 
-  const ref = useRef(className);
+  const [className, setClassName] = useState<any>(DEFAULT_CLASSES);
 
   useEffect(() => {
     if (isDisabled) {
-      const classNameCopy = JSON.parse(JSON.stringify(ref.current));
+      const classNameCopy = JSON.parse(JSON.stringify(DEFAULT_CLASSES));
       classNameCopy.wrapper.disabled = "!bg-gray-100";
-      ref.current = { ...classNameCopy };
+      setClassName((prev: any) => {
+        return { ...prev, ...classNameCopy };
+      });
     }
-  }, [isDisabled]);
+  }, [isDisabled, DEFAULT_CLASSES]);
 
   let inputMode: any =
     "none" ||
@@ -115,11 +117,11 @@ function TextInput(props: TextInputProps<Inputs>) {
     undefined;
 
   if (fieldState && fieldState.error && fieldState.error.message) {
-    ref.current.wrapper.error = "!border-b-red-600";
-    ref.current.label.error = "text-red-600";
+    className.wrapper.error = "!border-b-red-600";
+    className.label.error = "text-red-600";
   } else {
-    ref.current.wrapper.error = "";
-    ref.current.label.error = "";
+    className.wrapper.error = "";
+    className.label.error = "";
   }
 
   if (type === "num") {
@@ -130,12 +132,12 @@ function TextInput(props: TextInputProps<Inputs>) {
 
   return (
     <div
-      className={`${ref.current.wrapper.default} ${ref.current.wrapper.error} ${ref.current.wrapper.disabled}`}
+      className={`${className.wrapper.default} ${className.wrapper.error} ${className.wrapper.disabled}`}
     >
       {label && (
         <label
           htmlFor={field.name}
-          className={`${ref.current.label.default} ${ref.current.label.error}`}
+          className={`${className.label.default} ${className.label.error}`}
         >
           {label}
         </label>
@@ -144,13 +146,13 @@ function TextInput(props: TextInputProps<Inputs>) {
         {...field}
         id={field.name}
         value={field.value ? field.value : ""}
-        className={ref.current.input}
+        className={className.input}
         type={type}
         inputMode={inputMode || "text"}
         placeholder={placeHolder}
         disabled={isDisabled}
       />
-      <p className={ref.current.errorText}>{fieldState.error?.message}</p>
+      <p className={className.errorText}>{fieldState.error?.message}</p>
       {/* <button className={`${className.btn.btn} ${className.btn.save}`}>
         Save
       </button>

@@ -1,48 +1,23 @@
 "use client";
 
-import React, { useMemo } from "react";
-import {
-  useForm,
-  UseControllerProps,
-  useController,
-  FieldValues,
-  SubmitHandler,
-} from "react-hook-form";
-import { boolean, number, object, string } from "yup";
+import React, { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { number, object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-interface Inputs {
+import Input from "../_components/ui/input";
+import Select from "../_components/ui/select";
+import CheckBox from "../_components/ui/checkbox";
+import RadioButton from "../_components/ui/raduibutton";
+import Button from "../_components/ui/button";
+
+export interface Inputs {
   firstName: string;
   age?: number | null;
+  dob?: string;
   gender: string;
-  isActive?: number;
-}
-
-interface TextInputProps<T extends FieldValues> {
-  type?: "text" | "num";
-  placeHolder?: string;
-  label?: string;
-  useControllerProps: UseControllerProps<T>;
-  isDisabled?: boolean;
-}
-
-interface SelectInputs<T extends FieldValues> {
-  placeHolder?: string;
-  label?: string;
-  useControllerProps: UseControllerProps<T>;
-  selectionItems: Record<string, any>[];
-}
-
-interface CheckBoxInputs<T extends FieldValues> {
-  label?: string;
-  useControllerProps: UseControllerProps<T>;
-}
-
-interface TextInputProps<T extends FieldValues> {
-  type?: "text" | "num";
-  placeHolder?: string;
-  label?: string;
-  useControllerProps: UseControllerProps<T>;
+  isActive?: number | null;
+  isEnabled?: string;
 }
 
 const schema = object().shape({
@@ -51,221 +26,27 @@ const schema = object().shape({
     .integer("Must be a valid number.")
     .typeError("Must be a valid number.")
     .min(1, "Min value is 1.")
-    .nullable()
+    .required()
     .transform((value, originalValue) =>
       String(originalValue).trim() === "" ? null : value
     ),
+  dob: string().required("DOB is required"),
   gender: string()
     .required("Required")
     .oneOf(["", "volvo", "saab", "mercedes", "audi"], "Invalid Selection")
     .label("Selected Country"),
   isActive: number()
-    .oneOf([0, 1])
+    .required()
     .transform((value, originalValue) => {
-      return Boolean(originalValue) ? 1 : 0;
-    }),
-});
-
-function TextInput(props: TextInputProps<Inputs>) {
-  const {
-    useControllerProps,
-    placeHolder = "",
-    type = "text",
-    label = "",
-    isDisabled = false,
-  } = props;
-  const { field, fieldState } = useController(useControllerProps);
-
-  const className = useMemo(() => {
-    let className = {
-      wrapper: {
-        default:
-          "w-full border-b border-b-stone-600 flex flex-row items-center focus-within:border-blue-600 transition-all py-1 px-3",
-        error: "",
-        disabled: "",
-      },
-      label: {
-        default: "mr-1 font-semibold ",
-        error: "",
-      },
-      input: "outline-none bg-transparent flex-grow",
-      errorText: "text-red-600 text-xs font-semibold",
-    };
-
-    const classNameCopy = JSON.parse(JSON.stringify(className));
-    if (isDisabled) {
-      classNameCopy.wrapper.disabled = "!bg-gray-100";
-      className = { ...classNameCopy };
-    }
-
-    if (!isDisabled) {
-      if (fieldState && fieldState.error && fieldState.error.message) {
-        classNameCopy.wrapper.error = "!border-b-red-600";
-        classNameCopy.label.error = "text-red-600";
-        className = { ...classNameCopy };
+      if (originalValue === null) {
+        return null;
       } else {
-        classNameCopy.wrapper.error = "";
-        classNameCopy.label.error = "";
-        className = { ...classNameCopy };
+        // return Boolean(originalValue) ? 1 : 0; // if not required
+        return Boolean(originalValue) ? 1 : null; // if required
       }
-    }
-
-    return className;
-  }, [isDisabled, fieldState]);
-
-  let inputMode: any =
-    "none" ||
-    "text" ||
-    "tel" ||
-    "url" ||
-    "email" ||
-    "numeric" ||
-    "decimal" ||
-    "search" ||
-    undefined;
-
-  if (type === "num") {
-    inputMode = "numeric";
-  } else {
-    inputMode = "text";
-  }
-
-  return (
-    <div
-      className={`${className.wrapper.default} ${className.wrapper.error} ${className.wrapper.disabled}`}
-    >
-      {label && (
-        <label
-          htmlFor={field.name}
-          className={`${className.label.default} ${className.label.error}`}
-        >
-          {label}
-        </label>
-      )}
-      <input
-        {...field}
-        id={field.name}
-        value={field.value ? field.value : ""}
-        className={className.input}
-        type={type}
-        inputMode={inputMode || "text"}
-        placeholder={placeHolder}
-        disabled={isDisabled}
-      />
-      {!isDisabled && (
-        <p className={className.errorText}>{fieldState.error?.message}</p>
-      )}
-      {/* <button className={`${className.btn.btn} ${className.btn.save}`}>
-        Save
-      </button>
-      <button className={`${className.btn.btn} ${className.btn.cancel}`}>
-        Cancel
-      </button> */}
-      {/* <p>{fieldState.isTouched && "Touched"}</p>
-      <p>{fieldState.isDirty && "Dirty"}</p>
-      <p>{fieldState.invalid ? "invalid" : "valid"}</p>
-      <p>{fieldState.error ? "error" : fieldState.error}</p> */}
-    </div>
-  );
-}
-
-function SelectInput(props: SelectInputs<Inputs>) {
-  const {
-    useControllerProps,
-    placeHolder = "",
-    label = "",
-    selectionItems,
-  } = props;
-  const { field, fieldState } = useController(useControllerProps);
-
-  let className = {
-    wrapper: {
-      default:
-        "w-full border-b border-b-stone-600 flex flex-row items-center focus-within:border-blue-600 transition-all",
-      error: "",
-    },
-    label: {
-      default: "mr-1 font-semibold",
-      error: "",
-    },
-    input: "outline-none bg-transparent flex-grow appearance-none select-input",
-    errorText: "text-red-600 text-xs font-semibold",
-  };
-
-  if (fieldState && fieldState.error && fieldState.error.message) {
-    const classNameCopy = JSON.parse(JSON.stringify(className));
-    classNameCopy.wrapper.error = "!border-b-red-600";
-    classNameCopy.label.error = "text-red-600";
-    className = { ...classNameCopy };
-  } else {
-    const classNameCopy = JSON.parse(JSON.stringify(className));
-    classNameCopy.wrapper.error = "";
-    classNameCopy.label.error = "";
-    className = { ...classNameCopy };
-  }
-
-  return (
-    <div className={`${className.wrapper.default} ${className.wrapper.error}`}>
-      <label
-        htmlFor={field.name}
-        className={`${className.label.default} ${className.label.error}`}
-      >
-        {label}
-      </label>
-      <select
-        {...field}
-        name="cars"
-        id="cars"
-        value={field.value ? field.value : ""}
-        className={className.input}
-      >
-        <option value="">{placeHolder}</option>
-        {selectionItems.map((item, i) => {
-          return (
-            <option key={i} value={item.value}>
-              {item.text}
-            </option>
-          );
-        })}
-      </select>
-      <p className={className.errorText}>{fieldState.error?.message}</p>
-    </div>
-  );
-}
-
-function CheckBox(props: CheckBoxInputs<Inputs>) {
-  const { useControllerProps, label = "" } = props;
-  const { field, fieldState } = useController(useControllerProps);
-
-  let className = {
-    wrapper: {
-      default: "w-full flex flex-row items-center",
-      error: "",
-    },
-    label: {
-      default: "mr-1 font-semibold",
-      error: "",
-    },
-    input: "outline-none bg-transparent flex-grow appearance-none select-input",
-    errorText: "text-red-600 text-xs font-semibold",
-  };
-
-  return (
-    <div className={`${className.wrapper.default} ${className.wrapper.error}`}>
-      <label
-        htmlFor={field.name}
-        className={`${className.label.default} ${className.label.error}`}
-      >
-        {label}
-      </label>
-      <input
-        {...field}
-        value={field.value ? field.value : ""}
-        type="checkbox"
-      />
-    </div>
-  );
-}
+    }),
+  isEnabled: string().required("A radio option is required"),
+});
 
 export default function Page() {
   const {
@@ -277,8 +58,10 @@ export default function Page() {
     defaultValues: {
       firstName: "",
       age: null,
+      dob: "",
       gender: "",
-      isActive: 0,
+      isActive: null,
+      isEnabled: "",
     },
     mode: "all",
     resolver: yupResolver<Inputs>(schema),
@@ -287,6 +70,8 @@ export default function Page() {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
   console.log("🚀 ~ file: page.tsx:74 ~ Page ~ errors:", errors);
+
+  const [isDis, setIsDis] = useState(true);
 
   //   console.log(watch("firstName"));
   //   const watchAllFields = watch();
@@ -325,33 +110,63 @@ export default function Page() {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-start gap-5"
       >
-        <TextInput
+        <Input
           label="Name"
           type="text"
           placeHolder="Item"
           useControllerProps={{ control, name: "firstName" }}
-          isDisabled={true}
+          // isDisabled={isDis}
         />
-        <TextInput
+
+        <Input
           label="Age"
           type="num"
           placeHolder="Item"
           useControllerProps={{ control, name: "age" }}
-          isDisabled={true}
+          // isDisabled={!isDis}
         />
 
-        <SelectInput
+        <Input
+          label="DOB"
+          type="date"
+          placeHolder="Item"
+          useControllerProps={{ control, name: "dob" }}
+          // isDisabled={!isDis}
+        />
+
+        <Select
           label="Gender"
           selectionItems={selectionItems}
           placeHolder="Select One"
           useControllerProps={{ control, name: "gender" }}
+          isDisabled={false}
         />
 
         <CheckBox
           label="Is Active"
           useControllerProps={{ control, name: "isActive" }}
+          // isDisabled
         />
-        <button type="submit">Save</button>
+
+        <CheckBox
+          label="Is Active"
+          useControllerProps={{ control, name: "isActive" }}
+          isDisabled
+        />
+
+        <RadioButton
+          label="Is Enabled - A"
+          value="A"
+          useControllerProps={{ control, name: "isEnabled" }}
+        />
+
+        <RadioButton
+          label="Is Enabled - B"
+          value="B"
+          useControllerProps={{ control, name: "isEnabled" }}
+        />
+
+        <Button label="Save" type="submit" />
       </form>
     </>
   );
